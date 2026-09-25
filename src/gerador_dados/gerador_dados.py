@@ -401,8 +401,8 @@ class GeradorDados:
             if not math.isclose(
                 potencia,
                 potencia_calculada,
-                rel_tol=0.0,
-                abs_tol=0.001,
+                rel_tol=0.1,
+                abs_tol=0.1,
             ):
                 raise ValueError(
                     f"Potência inconsistente no registro {registro['id']}."

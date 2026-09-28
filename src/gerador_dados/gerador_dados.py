@@ -61,7 +61,7 @@ class GeradorDados:
         # ================================================================
         # ALTERE AQUI O CAMINHO DO DATASET DE SAÍDA
         # ================================================================
-        self.output_path = Path(".dados/dados_aurora_siger.csv")
+        self._output_path = Path(".dados/dados_aurora_siger.csv")
 
         self.quantidade_ciclos = quantidade_ciclos
         self.intervalo_minutos = intervalo_minutos
@@ -115,6 +115,12 @@ class GeradorDados:
         }
 
         self.data_inicio = datetime(2040, 1, 1, 0, 0, 0)
+
+
+    @property
+    def output_path(self) -> Path:
+        return self._output_path
+
 
     def gerar(self) -> Path:
         """Gera o dataset completo e retorna o caminho do arquivo."""
@@ -396,7 +402,7 @@ class GeradorDados:
             carga = float(registro["carga"])
 
             # Regra física: P = V * I.
-            potencia_calculada = tensao * corrente
+            potencia_calculada = round(tensao * corrente, 3)
 
             if not math.isclose(
                 potencia,

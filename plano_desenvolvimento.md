@@ -1835,11 +1835,11 @@ e chegar a um fluxo funcional sem precisar executar manualmente dezenas de scrip
 
 ## Dados
 
-- [ ] Dataset criado
-- [ ] Gerador implementado
-- [ ] Dados coerentes
-- [ ] Anomalias controladas
-- [ ] Potência relacionada a tensão/corrente
+- [x] Dataset criado
+- [x] Gerador implementado
+- [x] Dados coerentes
+- [x] Anomalias controladas
+- [x] Potência relacionada a tensão/corrente
 
 ## Análise
 

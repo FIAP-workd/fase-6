@@ -2,6 +2,7 @@ import os
 import pandas as pd
 from src.gerador_dados import GeradorDados
 from src.consulta_registros import Consulta
+from src.analise import Indicadores
 
 class InterromperLoop(Exception):
     """
@@ -98,9 +99,7 @@ Escolha uma opção:
 
                 except Exception as erro:
 
-                    print(
-                        "\nOcorreu um erro inesperado. "
-                    )
+                    print(erro)
 
                     self.pausar()
 
@@ -115,7 +114,8 @@ Escolha uma opção:
 
 
     def _analisar_indicadores(self):
-        ...
+        indicadores = Indicadores(self.__dados)
+        indicadores.run()
 
 
     def _modelo_previsao(self):

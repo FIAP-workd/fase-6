@@ -1828,9 +1828,9 @@ e chegar a um fluxo funcional sem precisar executar manualmente dezenas de scrip
 ## Estrutura
 
 - [ ] `README.md`
-- [ ] `main.py`
-- [ ] `.dados/`
-- [ ] `.docs/`
+- [x] `codigo_fonte.py`
+- [x] `.dados/`
+- [x] `.docs/`
 - [ ] `src/`
 
 ## Dados
@@ -1843,10 +1843,10 @@ e chegar a um fluxo funcional sem precisar executar manualmente dezenas de scrip
 
 ## Análise
 
-- [ ] Indicadores
-- [ ] Erro absoluto
-- [ ] Erro relativo
-- [ ] Interpretação dos erros
+- [x] Indicadores
+- [x] Erro absoluto
+- [x] Erro relativo
+- [ ] Interpretação dos erros (Fazer no relatório técnico)
 
 ## Modelo
 

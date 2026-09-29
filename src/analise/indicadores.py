@@ -61,11 +61,14 @@ class Indicadores:
         operacao_alerta = len(self.__dados[self.__dados["status"] == "Alerta"])
         return (operacao_alerta / total_registros) * 100 if total_registros > 0 else 0
 
+    def calculo_erro_absoluto(self):
+        return abs(self.__dados['latencia_observada'] - self.__dados['latencia_prevista'])
 
-    def run(self):
-        """
-        Executa a análise dos indicadores e exibe os resultados.
-        """
+    def calculo_erro_relativo(self):
+        return self.calculo_erro_absoluto() / self.__dados['latencia_observada']
+
+    def _analise_indicadores(self):
+        
         print("\nAnalisando indicadores...\n")
         print(f"Latência observada média: {self.latencia_observada_media():.2f} ms")
         print(f"Latência observada máxima: {self.latencia_observada_maxima():.2f} ms")
@@ -77,3 +80,18 @@ class Indicadores:
         print(f"Operação crítica: {self.operacao_critica_percentual():.2f} %")
         print(f"Operação em alerta: {self.operacao_alerta_percentual():.2f} %")
         self._pausar()
+
+    def _analise_erros(self):
+        print("\nAnalisando erros...\n")
+        erro_absoluto = self.calculo_erro_absoluto()
+        erro_relativo = self.calculo_erro_relativo()
+        print(f"Erro absoluto médio: {erro_absoluto.mean():.2f} ms")
+        print(f"Erro relativo médio: {erro_relativo.mean():.2%}")
+        self._pausar()
+
+    def run(self):
+        """
+        Executa a análise dos indicadores e exibe os resultados.
+        """
+        self._analise_indicadores()
+        self._analise_erros()

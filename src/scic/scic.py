@@ -108,6 +108,38 @@ Escolha uma opção:
             print("Sistema encerrado.")
 
 
+    def _consultar_registros(self):
+        ...
+
+
+    def _analisar_indicadores(self):
+        ...
+
+
+    def _modelo_previsao(self):
+        ...
+
+    def _gerenciar_alertas(self):
+        ...
+
+    
+    def _buscar_modulos(self):
+        ...
+
+
+    def _analisar_consumo_eletricidade(self):
+        ...
+
+    def _executar_analise_completa(self):
+        ...
+
+    def _informacoes_sistema(self):
+        ...
+
+    def _sair(self):
+        raise InterromperLoop
+
+
 if __name__ == "__main__":
     scic = SCIC()
     scic.run()

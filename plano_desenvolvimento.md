@@ -1830,7 +1830,7 @@ e chegar a um fluxo funcional sem precisar executar manualmente dezenas de scrip
 - [ ] `README.md`
 - [x] `codigo_fonte.py`
 - [x] `.dados/`
-- [x] `.docs/`
+- [ ] `.docs/`
 - [ ] `src/`
 
 ## Dados

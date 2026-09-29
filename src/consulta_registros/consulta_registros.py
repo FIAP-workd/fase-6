@@ -34,7 +34,6 @@ Consulta de registros
         try:
             while True:
                 self._exibir_menu()
-                print(self.menu_message)
                 opcao = input("Digite sua opção: ").strip()
                 if opcao in self.dict_opcoes:
                     self.dict_opcoes[opcao]()
@@ -58,12 +57,14 @@ Consulta de registros
         
         print(f"\nExibindo os {numero_primeiros_registros} primeiros registros:\n")
         print(self.registros.head(numero_primeiros_registros))
+        self._pause()
 
     def _exibir_ultimos_registros(self):
         numero_ultimos_registros = self.get_num_registros("últimos")
         
         print(f"\nExibindo os {numero_ultimos_registros} últimos registros:\n")
         print(self.registros.tail(numero_ultimos_registros))
+        self._pause()
 
     def _consultar_por_modulo(self):
         modulo = input("Digite o módulo que deseja consultar: ").strip()
@@ -79,7 +80,7 @@ Consulta de registros
         else:
             print(f"\nRegistros encontrados para o módulo '{modulo}':\n")
             print(registros_filtrados)
-
+        self._pause()
 
     def _consultar_por_tipo_modulo(self):
         tipo_modulo = input("Digite o tipo de módulo que deseja consultar: ").strip()
@@ -95,6 +96,7 @@ Consulta de registros
         else:
             print(f"\nRegistros encontrados para o tipo de módulo '{tipo_modulo}':\n")
             print(registros_filtrados)
+        self._pause()
 
     def _consultar_por_status(self):
         dict_status = {
@@ -102,7 +104,7 @@ Consulta de registros
             2: "Alerta",
             3: "Normal"
         }
-        status = int(input("Digite o status que deseja consultar: \n1. Crítico\n2. Alerta\n3. Normal").strip())
+        status = int(input("Digite o status que deseja consultar: \n1. Crítico\n2. Alerta\n3. Normal\n").strip())
         if status not in (1, 2, 3):
             print("\nStatus inválido. Por favor, escolha uma opção válida.\n")
             return
@@ -115,6 +117,10 @@ Consulta de registros
         else:
             print(f"\nRegistros encontrados para o status '{status_nome}':\n")
             print(registros_filtrados)
+        self._pause()
 
     def _voltar(self):
         raise QuebraSecundaria
+    
+    def _pause(self):
+        input("\nPressione Enter para continuar...")

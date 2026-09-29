@@ -1,6 +1,7 @@
 import os
 import pandas as pd
 from src.gerador_dados import GeradorDados
+from src.consulta_registros import Consulta
 
 class InterromperLoop(Exception):
     """
@@ -109,7 +110,8 @@ Escolha uma opção:
 
 
     def _consultar_registros(self):
-        ...
+        consulta = Consulta(self.__dados)
+        consulta.run()
 
 
     def _analisar_indicadores(self):

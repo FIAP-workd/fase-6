@@ -16,7 +16,7 @@ import pandas as pd
 
 
 class Modelo:
-    """Regressão linear múltipla para estimar ``latencia_observada``.
+    """Regressão múltipla com termos não lineares para ``latencia_observada``.
 
     As variáveis explicativas seguem o plano de desenvolvimento: carga,
     tensão, corrente e ciclo. A potência não é incluída, pois ela é derivada
@@ -25,12 +25,14 @@ class Modelo:
 
     VARIAVEIS_EXPLICATIVAS = ("carga", "tensao", "corrente", "ciclo")
     VARIAVEL_ALVO = "latencia_observada"
+    TRANSFORMACOES_DISPONIVEIS = ("quadratico", "logaritmico")
 
     def __init__(
         self,
         dados: pd.DataFrame,
         percentual_teste: float = 0.2,
         seed: int = 42,
+        transformacoes: tuple[str, ...] = ("quadratico", "logaritmico"),
     ) -> None:
         if not 0 < percentual_teste < 1:
             raise ValueError("percentual_teste deve estar entre 0 e 1.")
@@ -38,6 +40,14 @@ class Modelo:
         self.dados = dados.copy()
         self.percentual_teste = percentual_teste
         self.seed = seed
+        self.transformacoes = tuple(transformacoes)
+        transformacoes_invalidas = (
+            set(self.transformacoes) - set(self.TRANSFORMACOES_DISPONIVEIS)
+        )
+        if transformacoes_invalidas:
+            nomes = ", ".join(sorted(transformacoes_invalidas))
+            raise ValueError(f"Transformações não suportadas: {nomes}.")
+        self.variaveis_modelo = self._criar_variaveis_modelo()
         self.coeficientes: dict[str, float] | None = None
         self.intercepto: float | None = None
         self.metricas: dict[str, float] | None = None
@@ -64,7 +74,12 @@ class Modelo:
         )
         if dados_numericos.isna().any().any():
             raise ValueError("As variáveis do modelo devem ser numéricas e preenchidas.")
-        if len(self.dados) < len(self.VARIAVEIS_EXPLICATIVAS) + 2:
+        variaveis_explicativas = dados_numericos[list(self.VARIAVEIS_EXPLICATIVAS)]
+        if "logaritmico" in self.transformacoes and (variaveis_explicativas <= 0).any().any():
+            raise ValueError(
+                "A transformação logarítmica exige variáveis explicativas maiores que zero."
+            )
+        if len(self.dados) < len(self.variaveis_modelo) + 2:
             raise ValueError("Não há registros suficientes para treinar o modelo.")
 
         self.dados[colunas_numericas] = dados_numericos
@@ -78,7 +93,7 @@ class Modelo:
         indices_teste = indices[:tamanho_teste]
         indices_treino = indices[tamanho_teste:]
 
-        if len(indices_treino) < len(self.VARIAVEIS_EXPLICATIVAS) + 1:
+        if len(indices_treino) < len(self.variaveis_modelo) + 1:
             raise ValueError("Não há registros de treino suficientes para a regressão.")
 
         treino = self.dados.iloc[indices_treino]
@@ -88,7 +103,7 @@ class Modelo:
         parametros = self._resolver_minimos_quadrados(matriz, alvo)
 
         self.intercepto = parametros[0]
-        self.coeficientes = dict(zip(self.VARIAVEIS_EXPLICATIVAS, parametros[1:]))
+        self.coeficientes = dict(zip(self.variaveis_modelo, parametros[1:]))
         self.prever_todos_pontos()
 
         observados = self.dados.iloc[indices_teste][self.VARIAVEL_ALVO].tolist()
@@ -97,17 +112,39 @@ class Modelo:
         return self.metricas.copy()
 
     def _calcular_normalizacao(self, treino: pd.DataFrame) -> None:
-        for variavel in self.VARIAVEIS_EXPLICATIVAS:
-            media = float(treino[variavel].mean())
-            escala = float(treino[variavel].std(ddof=0))
+        for variavel in self.variaveis_modelo:
+            valores = [
+                self._valor_termo(registro, variavel)
+                for _, registro in treino.iterrows()
+            ]
+            media = sum(valores) / len(valores)
+            escala = math.sqrt(
+                sum((valor - media) ** 2 for valor in valores) / len(valores)
+            )
             self._medias[variavel] = media
             self._escalas[variavel] = escala if escala > 0 else 1.0
 
+    def _criar_variaveis_modelo(self) -> tuple[str, ...]:
+        variaveis = list(self.VARIAVEIS_EXPLICATIVAS)
+        if "quadratico" in self.transformacoes:
+            variaveis.extend(f"{variavel}_quadrado" for variavel in self.VARIAVEIS_EXPLICATIVAS)
+        if "logaritmico" in self.transformacoes:
+            variaveis.extend(f"log_{variavel}" for variavel in self.VARIAVEIS_EXPLICATIVAS)
+        return tuple(variaveis)
+
+    @staticmethod
+    def _valor_termo(registro: Mapping[str, Any], termo: str) -> float:
+        if termo.startswith("log_"):
+            return math.log(float(registro[termo.removeprefix("log_")]))
+        if termo.endswith("_quadrado"):
+            return float(registro[termo.removesuffix("_quadrado")]) ** 2
+        return float(registro[termo])
+
     def _linha_normalizada(self, registro: Mapping[str, Any]) -> list[float]:
         return [1.0] + [
-            (float(registro[variavel]) - self._medias[variavel])
+            (self._valor_termo(registro, variavel) - self._medias[variavel])
             / self._escalas[variavel]
-            for variavel in self.VARIAVEIS_EXPLICATIVAS
+            for variavel in self.variaveis_modelo
         ]
 
     @staticmethod

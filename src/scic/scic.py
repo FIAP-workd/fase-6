@@ -158,7 +158,8 @@ Modelo de previsão
     @staticmethod
     def _treinar_e_exibir_modelo(modelo):
         metricas = modelo.treinamento_modelo()
-        print("\nModelo treinado com as variáveis: carga, tensão, corrente e ciclo.")
+        print("\nModelo treinado com termos lineares, quadráticos e logarítmicos.")
+        print(f"Termos usados: {', '.join(modelo.variaveis_modelo)}")
         print("Avaliação no conjunto de teste:")
         for nome, valor in metricas.items():
             print(f"{nome}: {valor:.3f}")

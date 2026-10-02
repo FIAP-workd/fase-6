@@ -4,8 +4,10 @@ Código referente a fase 6 do primeiro ano do curso de ciência da computação 
 ## Modelo de previsão
 
 No menu principal, selecione a opção **3 - Modelo de previsão**. O submenu
-permite treinar uma regressão linear múltipla para estimar a
-`latencia_observada` usando `carga`, `tensao`, `corrente` e `ciclo`.
+permite treinar uma regressão múltipla para estimar a
+`latencia_observada` usando `carga`, `tensao`, `corrente` e `ciclo`, além de
+termos quadráticos e logarítmicos dessas variáveis para capturar tendências
+não lineares.
 
 Após o treinamento, é possível consultar uma amostra das previsões calculadas
 para todos os registros, visualizar os dados de entrada e informar uma nova

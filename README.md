@@ -12,6 +12,9 @@ não lineares.
 Após o treinamento, é possível consultar uma amostra das previsões calculadas
 para todos os registros, visualizar os dados de entrada e informar uma nova
 instância de variáveis operacionais para obter a latência estimada.
+Também é possível gerar arquivos PNG em `.dados/graficos_modelo` com os erros
+residuais, a comparação entre previsão e observação, a relação log-linear
+entre carga e latência e a relação quadrática entre carga e tensão.
 
 Instale as dependências antes de executar o projeto:
 

@@ -10,9 +10,14 @@ from __future__ import annotations
 import math
 import random
 from collections.abc import Mapping
+from pathlib import Path
 from typing import Any
 
+import matplotlib
 import pandas as pd
+
+matplotlib.use("Agg")
+import matplotlib.pyplot as plt
 
 
 class Modelo:
@@ -212,6 +217,121 @@ class Modelo:
         ).abs()
         self.previsoes = resultado
         return resultado.copy()
+
+    def gerar_graficos(self, diretorio_saida: str | Path = ".dados/graficos_modelo") -> dict[str, Path]:
+        """Gera gráficos de diagnóstico e retorna os caminhos dos arquivos PNG.
+
+        Os gráficos são salvos em arquivo, em vez de abertos em uma janela, para
+        que a funcionalidade também opere no terminal e em ambientes sem tela.
+        """
+        previsoes = self.prever_todos_pontos()
+        diretorio = Path(diretorio_saida)
+        diretorio.mkdir(parents=True, exist_ok=True)
+
+        observados = previsoes[self.VARIAVEL_ALVO].tolist()
+        previstos = previsoes["latencia_modelo_prevista"].tolist()
+        erros = [observado - previsto for observado, previsto in zip(observados, previstos)]
+        caminhos = {
+            "erros_previstos": diretorio / "erros_por_previsao.png",
+            "previsao": diretorio / "previsao_vs_observado.png",
+            "log_linear_carga": diretorio / "log_carga_vs_latencia.png",
+            "quadratica_carga_tensao": diretorio / "carga_vs_tensao_quadratica.png",
+        }
+
+        figura, eixo = plt.subplots(figsize=(9, 5))
+        eixo.scatter(previstos, erros, alpha=0.35, s=14, color="#d95f02")
+        eixo.axhline(0, color="black", linewidth=1)
+        eixo.set(
+            title="Erros residuais por latência prevista",
+            xlabel="Latência prevista (ms)",
+            ylabel="Erro: observado - previsto (ms)",
+        )
+        self._salvar_grafico(figura, caminhos["erros_previstos"])
+
+        figura, eixo = plt.subplots(figsize=(7, 7))
+        eixo.scatter(observados, previstos, alpha=0.35, s=14, color="#1b9e77")
+        limite_inferior = min(observados + previstos)
+        limite_superior = max(observados + previstos)
+        eixo.plot([limite_inferior, limite_superior], [limite_inferior, limite_superior], "--", color="black", label="Previsão ideal")
+        eixo.set(
+            title="Latência prevista versus observada",
+            xlabel="Latência observada (ms)",
+            ylabel="Latência prevista (ms)",
+        )
+        eixo.legend()
+        self._salvar_grafico(figura, caminhos["previsao"])
+
+        cargas = self.dados["carga"].tolist()
+        log_cargas = [math.log(carga) for carga in cargas]
+        intercepto, inclinacao = self._ajustar_reta(log_cargas, observados)
+        pontos_log = self._pontos_ordenados(log_cargas)
+        figura, eixo = plt.subplots(figsize=(9, 5))
+        eixo.scatter(log_cargas, observados, alpha=0.3, s=14, color="#7570b3")
+        eixo.plot(
+            pontos_log,
+            [intercepto + inclinacao * ponto for ponto in pontos_log],
+            color="#e7298a",
+            label="Ajuste log-linear",
+        )
+        eixo.set(
+            title="Relação log-linear entre carga e latência observada",
+            xlabel="log(carga)",
+            ylabel="Latência observada (ms)",
+        )
+        eixo.legend()
+        self._salvar_grafico(figura, caminhos["log_linear_carga"])
+
+        tensoes = self.dados["tensao"].tolist()
+        parametros = self._resolver_minimos_quadrados(
+            [[1.0, carga, carga ** 2] for carga in cargas], tensoes
+        )
+        pontos_carga = self._pontos_ordenados(cargas)
+        figura, eixo = plt.subplots(figsize=(9, 5))
+        eixo.scatter(cargas, tensoes, alpha=0.3, s=14, color="#66a61e")
+        eixo.plot(
+            pontos_carga,
+            [
+                parametros[0] + parametros[1] * ponto + parametros[2] * ponto ** 2
+                for ponto in pontos_carga
+            ],
+            color="#e7298a",
+            label="Ajuste quadrático",
+        )
+        eixo.set(
+            title="Relação quadrática entre carga e tensão",
+            xlabel="Carga (%)",
+            ylabel="Tensão (V)",
+        )
+        eixo.legend()
+        self._salvar_grafico(figura, caminhos["quadratica_carga_tensao"])
+        return caminhos
+
+    @staticmethod
+    def _salvar_grafico(figura: Any, caminho: Path) -> None:
+        figura.tight_layout()
+        figura.savefig(caminho, dpi=150)
+        plt.close(figura)
+
+    @staticmethod
+    def _ajustar_reta(x: list[float], y: list[float]) -> tuple[float, float]:
+        media_x = sum(x) / len(x)
+        media_y = sum(y) / len(y)
+        denominador = sum((valor - media_x) ** 2 for valor in x)
+        inclinacao = (
+            sum((valor_x - media_x) * (valor_y - media_y) for valor_x, valor_y in zip(x, y))
+            / denominador
+            if denominador
+            else 0.0
+        )
+        return media_y - inclinacao * media_x, inclinacao
+
+    @staticmethod
+    def _pontos_ordenados(valores: list[float], quantidade: int = 200) -> list[float]:
+        minimo, maximo = min(valores), max(valores)
+        if minimo == maximo:
+            return [minimo]
+        passo = (maximo - minimo) / (quantidade - 1)
+        return [minimo + passo * indice for indice in range(quantidade)]
 
     @staticmethod
     def _calcular_metricas(observados: list[float], previstos: list[float]) -> dict[str, float]:

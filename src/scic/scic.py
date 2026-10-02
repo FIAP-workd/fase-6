@@ -128,6 +128,7 @@ Escolha uma opção:
             "3": lambda: self._exibir_dados_modelo(modelo),
             "4": lambda: self._prever_nova_observacao(modelo),
             "5": lambda: self._exibir_coeficientes_modelo(modelo),
+            "6": lambda: self._gerar_graficos_modelo(modelo),
         }
         mensagem = """
 ---------------------
@@ -138,16 +139,17 @@ Modelo de previsão
 3 - Exibir dados usados pelo modelo
 4 - Prever nova observação
 5 - Exibir coeficientes do modelo
-6 - Voltar
+6 - Gerar gráficos do modelo
+7 - Voltar
 """
         while True:
             print(mensagem)
             opcao = input("Digite sua opção: ").strip()
-            if opcao == "6":
+            if opcao == "7":
                 return
             acao = opcoes.get(opcao)
             if acao is None:
-                print("Opção inválida. Digite um número entre 1 e 6.")
+                print("Opção inválida. Digite um número entre 1 e 7.")
                 continue
             try:
                 acao()
@@ -199,6 +201,13 @@ Modelo de previsão
         print("\nCoeficientes do modelo (com variáveis normalizadas):")
         for nome, valor in modelo.obter_coeficientes().items():
             print(f"{nome}: {valor:.6f}")
+
+    @staticmethod
+    def _gerar_graficos_modelo(modelo):
+        caminhos = modelo.gerar_graficos()
+        print("\nGráficos gerados:")
+        for nome, caminho in caminhos.items():
+            print(f"- {nome}: {caminho}")
 
     def _gerenciar_alertas(self):
         ...

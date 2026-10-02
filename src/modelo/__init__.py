@@ -1,1 +1,3 @@
-# src/modelo/__init__.py
+from .modelo import Modelo
+
+__all__ = ["Modelo"]

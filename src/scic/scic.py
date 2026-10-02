@@ -1,8 +1,10 @@
+import math
 import os
 import pandas as pd
 from src.gerador_dados import GeradorDados
 from src.consulta_registros import Consulta
 from src.analise import Indicadores
+from src.modelo import Modelo
 
 class InterromperLoop(Exception):
     """
@@ -119,7 +121,83 @@ Escolha uma opção:
 
 
     def _modelo_previsao(self):
-        ...
+        modelo = Modelo(self.__dados)
+        opcoes = {
+            "1": lambda: self._treinar_e_exibir_modelo(modelo),
+            "2": lambda: self._exibir_previsoes_modelo(modelo),
+            "3": lambda: self._exibir_dados_modelo(modelo),
+            "4": lambda: self._prever_nova_observacao(modelo),
+            "5": lambda: self._exibir_coeficientes_modelo(modelo),
+        }
+        mensagem = """
+---------------------
+Modelo de previsão
+---------------------
+1 - Treinar e avaliar modelo
+2 - Exibir previsões de todos os registros
+3 - Exibir dados usados pelo modelo
+4 - Prever nova observação
+5 - Exibir coeficientes do modelo
+6 - Voltar
+"""
+        while True:
+            print(mensagem)
+            opcao = input("Digite sua opção: ").strip()
+            if opcao == "6":
+                return
+            acao = opcoes.get(opcao)
+            if acao is None:
+                print("Opção inválida. Digite um número entre 1 e 6.")
+                continue
+            try:
+                acao()
+            except ValueError as erro:
+                print(f"Não foi possível executar a previsão: {erro}")
+            self.pausar()
+
+    @staticmethod
+    def _treinar_e_exibir_modelo(modelo):
+        metricas = modelo.treinamento_modelo()
+        print("\nModelo treinado com as variáveis: carga, tensão, corrente e ciclo.")
+        print("Avaliação no conjunto de teste:")
+        for nome, valor in metricas.items():
+            print(f"{nome}: {valor:.3f}")
+
+    @staticmethod
+    def _exibir_previsoes_modelo(modelo):
+        previsoes = modelo.prever_todos_pontos()
+        colunas = [
+            "id", "ciclo", "modulo", "latencia_observada",
+            "latencia_modelo_prevista", "erro_modelo_absoluto",
+        ]
+        print("\nPrevisões calculadas para todos os registros (amostra inicial):\n")
+        print(previsoes[colunas].head(20).to_string(index=False))
+        print(f"\nTotal de pontos previstos: {len(previsoes)}")
+
+    @staticmethod
+    def _exibir_dados_modelo(modelo):
+        colunas = list(Modelo.VARIAVEIS_EXPLICATIVAS) + [Modelo.VARIAVEL_ALVO]
+        print("\nDados usados pelo modelo (amostra inicial):\n")
+        print(modelo.dados[colunas].head(20).to_string(index=False))
+        print(f"\nTotal de registros disponíveis: {len(modelo.dados)}")
+
+    @staticmethod
+    def _prever_nova_observacao(modelo):
+        print("\nInforme os valores observados para calcular a latência estimada.")
+        variaveis = {}
+        for variavel in Modelo.VARIAVEIS_EXPLICATIVAS:
+            valor = float(input(f"{variavel.capitalize()}: ").strip())
+            if not math.isfinite(valor):
+                raise ValueError(f"{variavel} deve ser um número finito.")
+            variaveis[variavel] = valor
+        previsao = modelo.prever_instancia(variaveis)
+        print(f"\nLatência prevista: {previsao:.2f} ms")
+
+    @staticmethod
+    def _exibir_coeficientes_modelo(modelo):
+        print("\nCoeficientes do modelo (com variáveis normalizadas):")
+        for nome, valor in modelo.obter_coeficientes().items():
+            print(f"{nome}: {valor:.6f}")
 
     def _gerenciar_alertas(self):
         ...

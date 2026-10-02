@@ -143,7 +143,10 @@ class Modelo:
         if self.coeficientes is None or self.intercepto is None:
             self.treinamento_modelo()
 
-        faltantes = set(self.VARIAVEIS_EXPLICATIVAS) - set(variaveis)
+        # ``Series`` do pandas itera sobre os valores, e não sobre os nomes
+        # das colunas. Usar ``keys()`` garante que tanto um dicionário quanto
+        # uma linha do DataFrame sejam validados pelas chaves corretas.
+        faltantes = set(self.VARIAVEIS_EXPLICATIVAS) - set(variaveis.keys())
         if faltantes:
             raise ValueError(f"Variáveis ausentes: {', '.join(sorted(faltantes))}.")
 

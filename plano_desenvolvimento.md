@@ -646,21 +646,183 @@ potencia
 ---
 
 ## 14.1 Modelo
+Pasta:
 
-Pode ser utilizada uma regressão simples/múltipla.
+src/modelo/
 
-Exemplo conceitual:
+Arquivos:
 
-```text
-latencia =
-β0
-+ β1 × carga
-+ β2 × tensão
-+ β3 × corrente
-+ β4 × potência
-```
+previsao.py
+metricas.py
 
-A implementação deve utilizar apenas bibliotecas permitidas no projeto.
+---
+
+## 14.1 Objetivo do modelo
+
+O SCIC utilizará um modelo de regressão para estimar a latência
+observada de comunicação dos módulos da colônia Aurora Siger.
+
+O objetivo é verificar se características operacionais e elétricas
+dos módulos possuem relação suficiente com a latência de comunicação
+para permitir uma estimativa razoável desse indicador.
+
+O problema será tratado como um problema de regressão supervisionada,
+pois a variável que desejamos prever é numérica e possui valores
+contínuos.
+
+---
+
+## 14.2 Tipo de modelo
+
+Será utilizada uma regressão linear múltipla.
+
+A regressão linear múltipla permite estimar uma variável dependente
+a partir de duas ou mais variáveis explicativas.
+
+A estrutura geral do modelo será:
+
+latencia_observada =
+β0 +
+β1 × carga +
+β2 × tensao +
+β3 × corrente +
+β4 × ciclo +
+ε
+
+Onde:
+
+- β0 representa o intercepto;
+- β1, β2, β3 e β4 representam os coeficientes estimados pelo modelo;
+- ε representa o erro/resíduo da previsão.
+
+---
+
+## 14.3 Variável dependente
+
+A variável dependente, também chamada de variável resposta ou
+variável alvo, será:
+
+latencia_observada
+
+Essa variável representa a latência efetivamente observada na
+comunicação de determinado módulo durante determinado ciclo.
+
+Unidade:
+
+milissegundos (ms).
+
+O modelo tentará estimar esse valor a partir das características
+operacionais disponíveis.
+
+---
+
+## 14.4 Variáveis explicativas
+
+As variáveis explicativas utilizadas inicialmente serão:
+
+### carga
+
+Representa o nível de utilização operacional do módulo.
+
+Uma maior carga pode representar maior demanda sobre os recursos
+do módulo e, consequentemente, potencial aumento da latência.
+
+### tensao
+
+Representa a tensão elétrica de operação do módulo.
+
+Essa variável permite investigar se alterações nas condições elétricas
+estão associadas a alterações na latência de comunicação.
+
+### corrente
+
+Representa a corrente elétrica utilizada pelo módulo.
+
+Assim como a tensão, pode fornecer informações sobre as condições
+operacionais do equipamento.
+
+### ciclo
+
+Representa o momento/ciclo da operação.
+
+A inclusão dessa variável permite ao modelo capturar possíveis
+variações temporais existentes nos dados simulados.
+
+---
+
+## 14.5 Variável potência
+
+A variável potência também estará presente nos dados do SCIC e será
+utilizada nos indicadores elétricos.
+
+Ela será calculada pela relação:
+
+potencia = tensao × corrente
+
+Por ser diretamente derivada de tensão e corrente, a potência não
+será utilizada simultaneamente com essas duas variáveis no modelo
+principal, evitando introduzir uma relação matemática redundante
+entre variáveis explicativas.
+
+A potência poderá, entretanto, ser utilizada em uma versão alternativa
+do modelo para comparação.
+
+---
+
+## 14.6 Separação entre X e y
+
+Para treinamento do modelo:
+
+X = [
+    carga,
+    tensao,
+    corrente,
+    ciclo
+]
+
+y = latencia_observada
+
+Onde:
+
+- X contém as variáveis explicativas;
+- y contém a variável que o modelo deve explicar/predizer.
+
+---
+
+## 14.7 Treinamento
+
+Os dados serão separados em conjunto de treinamento e conjunto de
+teste.
+
+O modelo será ajustado utilizando os dados de treinamento e,
+posteriormente, utilizado para gerar previsões para os dados de teste.
+
+A comparação entre:
+
+latencia_observada
+
+e
+
+latencia_prevista
+
+permitirá avaliar a capacidade de previsão do modelo.
+
+---
+
+## 14.8 Avaliação do modelo
+
+O desempenho do modelo será avaliado utilizando:
+
+- MAE — Mean Absolute Error;
+- MSE — Mean Squared Error;
+- RMSE — Root Mean Squared Error;
+- R² — Coeficiente de determinação.
+
+Essas métricas serão utilizadas para avaliar o quanto as previsões
+do modelo se aproximam dos valores observados.
+
+A interpretação dos resultados será realizada posteriormente no
+relatório técnico.
 
 ---
 

@@ -51,17 +51,17 @@ class Heap:
 
     def _left(self, index):
         left = 2 * index + 1
-        return left if left < len(self.heap) else None
+        return left if left > len(self.heap) else None
 
     def _right(self, index):
         right =  2*index+2 
-        return right if right < len(self.heap) else None
+        return right if right > len(self.heap) else None
 
     def _sift_up(self, index):
         parent_index = self._parent(index)
 
         # Lógica aqui está de minheap
-        while parent_index is not None and self.heap[index][0] < self.heap[parent_index][0]:
+        while parent_index is not None and self.heap[index][0] > self.heap[parent_index][0]:
             self.heap[index], self.heap[parent_index] = self.heap[parent_index], self.heap[index]
             index = parent_index
             parent_index = self._parent(index)
@@ -70,25 +70,20 @@ class Heap:
 
         while True:
 
-            smallest = index
+            greater = index
 
             left = self._left(index)
             right = self._right(index)
 
-            if left is not None and self.heap[left][0] < self.heap[smallest][0]:
-                smallest = left
+            if left is not None and self.heap[left][0] > self.heap[greater][0]:
+                greater = left
 
-            if right is not None and self.heap[right][0] < self.heap[smallest][0]:
-                smallest = right
+            if right is not None and self.heap[right][0] > self.heap[greater][0]:
+                greater = right
 
-            if smallest == index:
+            if greater == index:
                 break
 
-            self.heap[index], self.heap[smallest] = self.heap[smallest], self.heap[index]
-            index = smallest
+            self.heap[index], self.heap[greater] = self.heap[greater], self.heap[index]
+            index = greater
 
-
-if __name__ == '__main__':
-    min_heap = Heap()
-    min_heap.heapify([[10, '10'], [9, '9'], [8, '8'], [1,'1']])
-    print(min_heap)

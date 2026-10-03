@@ -2012,30 +2012,30 @@ e chegar a um fluxo funcional sem precisar executar manualmente dezenas de scrip
 
 ## Modelo
 
-- [ ] Modelo simples
-- [ ] Treino/teste
-- [ ] MAE
-- [ ] MSE
-- [ ] RMSE
-- [ ] R²
-- [ ] Interpretação
+- [x] Modelo simples
+- [x] Treino/teste
+- [x] MAE
+- [x] MSE
+- [x] RMSE
+- [x] R²
+- [ ] Interpretação (Fazer no relatório técnico)
 
 ## Heap
 
-- [ ] Implementação de baixo nível
-- [ ] Nós/estrutura
-- [ ] Inserção
-- [ ] Remoção
-- [ ] Prioridade
+- [x] Implementação de baixo nível
+- [x] Nós/estrutura
+- [x] Inserção
+- [x] Remoção
+- [x] Prioridade
 - [ ] Integração com alertas
 
 ## Trie
 
-- [ ] Implementação de baixo nível
-- [ ] Nós
-- [ ] Inserção
-- [ ] Busca
-- [ ] Busca por prefixo
+- [x] Implementação de baixo nível
+- [x] Nós
+- [x] Inserção
+- [x] Busca
+- [x] Busca por prefixo
 - [ ] Integração com módulos/sensores
 
 ## COA/Eletricidade

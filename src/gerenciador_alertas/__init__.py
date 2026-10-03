@@ -1,0 +1,1 @@
+# src/gerenciador_alertas

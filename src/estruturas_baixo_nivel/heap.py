@@ -41,7 +41,7 @@ class Heap:
 
 
     def meld(self, other_heap: Heap):
-        combined_heap = self.heap + other_heap
+        combined_heap = self.heap + other_heap.heap
         self.heapify(combined_heap)
 
         other_heap.heap = []
@@ -51,16 +51,16 @@ class Heap:
 
     def _left(self, index):
         left = 2 * index + 1
-        return left if left > len(self.heap) else None
+        return left if left < len(self.heap) else None
 
     def _right(self, index):
         right =  2*index+2 
-        return right if right > len(self.heap) else None
+        return right if right < len(self.heap) else None
 
     def _sift_up(self, index):
         parent_index = self._parent(index)
 
-        # Lógica aqui está de minheap
+        # Lógica aqui está de maxheap
         while parent_index is not None and self.heap[index][0] > self.heap[parent_index][0]:
             self.heap[index], self.heap[parent_index] = self.heap[parent_index], self.heap[index]
             index = parent_index
@@ -87,3 +87,16 @@ class Heap:
             self.heap[index], self.heap[greater] = self.heap[greater], self.heap[index]
             index = greater
 
+if __name__ == '__main__':
+    h = Heap()
+
+    h.heapify([(70, 'valor_armazenar 1'), (50, 'valor_armazenar 2')])
+    print(h)
+    h.insert(80, 'valor_armazenar 3')
+    print(h)
+    h.insert(75, 'valor_armazenar 4')
+    print(h)
+    h.extract_top()
+    print(h)
+    h.extract_top()
+    print(h)

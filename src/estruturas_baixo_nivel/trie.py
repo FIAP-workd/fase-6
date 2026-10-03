@@ -1,8 +1,6 @@
 from __future__ import annotations
 from typing import Any, Optional
 
-EMPTY_VALUE_NODE = '__EMPTY_NODE_VALUE__'
-
 class TrieNode:
     def __init__(self) -> None:
         self.children = {}

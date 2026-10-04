@@ -2036,7 +2036,7 @@ e chegar a um fluxo funcional sem precisar executar manualmente dezenas de scrip
 - [x] Inserção
 - [x] Busca
 - [x] Busca por prefixo
-- [ ] Integração com módulos/sensores
+- [x] Integração com módulos/sensores
 
 ## COA/Eletricidade
 

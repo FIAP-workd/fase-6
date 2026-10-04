@@ -6,6 +6,8 @@ from src.consulta_registros import Consulta
 from src.analise import Indicadores
 from src.modelo import Modelo
 from src.buscador_modulos import Buscador
+from src.gerenciador_alertas import GerenciadorAlertas
+
 
 class InterromperLoop(Exception):
     """
@@ -211,7 +213,8 @@ Modelo de previsão
             print(f"- {nome}: {caminho}")
 
     def _gerenciar_alertas(self):
-        ...
+        alerta = GerenciadorAlertas(self.__dados)
+        alerta.run()
 
     
     def _buscar_modulos(self):

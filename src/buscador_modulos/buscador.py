@@ -28,18 +28,18 @@ Buscador de módulos
         self._inserir_modulos()
 
 
-    def run(self):
-            try:
-                while True:
-                    self._exibir_menu()
-                    opcao = input("Digite sua opção: ").strip()
-                    if opcao in self._dict_opcao:
-                        self._dict_opcao[opcao]()
-                    else:
-                        print("Opção inválida. Por favor, escolha uma opção válida.")
-                
-            except QuebraSecundaria:
-                pass
+    def run(self):    
+        try:
+            while True:
+                self._exibir_menu()
+                opcao = input("Digite sua opção: ").strip()
+                if opcao in self._dict_opcao:
+                    self._dict_opcao[opcao]()
+                else:
+                    print("Opção inválida. Por favor, escolha uma opção válida.")
+            
+        except QuebraSecundaria:
+            pass
 
     def _exibir_menu(self):
         print(self._message)

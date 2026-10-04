@@ -40,6 +40,30 @@ class Trie:
                 return False
             current = current.children[char]
         return True
+    
+    def get_words_with_prefix(self, prefix: str) -> list[str]:
+        """Retorna uma lista com todas as palavras que começam com o prefixo informado."""
+        current = self.root
+
+        for char in prefix:
+            if char not in current.children:
+                return []
+            current = current.children[char]
+        # 2. Coleta todas as palavras válidas abaixo desse nó usando DFS
+        words = []
+        words = self._collect_words(current, prefix, words)
+        return words
+
+    def _collect_words(self, node: TrieNode, current_word: str, words: list[str]) -> None:
+        """Função auxiliar recursiva para navegar pela árvore coletando palavras."""
+        if node._isEndOfWord:
+            words.append(current_word)
+        
+        # Explora todos os caracteres filhos ordenados alfabeticamente
+        for char in sorted(node.children.keys()):
+            self._collect_words(node.children[char], current_word + char, words)
+
+        return words
 
     def __str__(self):
         """Gera uma representação visual da Trie em formato de árvore."""
@@ -82,7 +106,8 @@ if __name__ == '__main__':
     t.insert(word2)
     t.insert(word3)
     t.insert(word4)
-    
-    print(t)
-    print(t.starts_with('ap'))
-    print(t.search('appl'))
+    words = t.get_words_with_prefix('ap')
+    print(words)
+#    print(t)
+#    print(t.starts_with('ap'))
+#    print(t.search('appl'))

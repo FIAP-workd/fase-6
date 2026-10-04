@@ -5,6 +5,7 @@ from src.gerador_dados import GeradorDados
 from src.consulta_registros import Consulta
 from src.analise import Indicadores
 from src.modelo import Modelo
+from src.buscador_modulos import Buscador
 
 class InterromperLoop(Exception):
     """
@@ -214,7 +215,8 @@ Modelo de previsão
 
     
     def _buscar_modulos(self):
-        ...
+        busca = Buscador(self.__dados)
+        busca.run()
 
 
     def _analisar_consumo_eletricidade(self):

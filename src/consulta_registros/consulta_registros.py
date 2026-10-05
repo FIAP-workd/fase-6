@@ -100,7 +100,7 @@ Consulta de registros
 
     def _consultar_por_status(self):
         dict_status = {
-            1: "Crítico",
+            1: "Critico",
             2: "Alerta",
             3: "Normal"
         }

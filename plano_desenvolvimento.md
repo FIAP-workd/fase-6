@@ -2027,7 +2027,7 @@ e chegar a um fluxo funcional sem precisar executar manualmente dezenas de scrip
 - [x] Inserção
 - [x] Remoção
 - [x] Prioridade
-- [ ] Integração com alertas
+- [x] Integração com alertas
 
 ## Trie
 
@@ -2066,9 +2066,9 @@ e chegar a um fluxo funcional sem precisar executar manualmente dezenas de scrip
 
 ## Integração
 
-- [ ] Classe `SCIC`
-- [ ] `main.py` executa o sistema
-- [ ] Menu funcional
+- [x] Classe `SCIC`
+- [x] `main.py` executa o sistema
+- [x] Menu funcional
 - [ ] Fluxo completo testado
 - [ ] README atualizado
 - [ ] Relatório final

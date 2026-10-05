@@ -7,6 +7,7 @@ from src.analise import Indicadores
 from src.modelo import Modelo
 from src.buscador_modulos import Buscador
 from src.gerenciador_alertas import GerenciadorAlertas
+from src.eletricidade import AnaliseEletricidade
 
 
 class InterromperLoop(Exception):
@@ -223,7 +224,8 @@ Modelo de previsão
 
 
     def _analisar_consumo_eletricidade(self):
-        ...
+        eletricidade = AnaliseEletricidade(self.__dados)
+        eletricidade.run()
 
     def _executar_analise_completa(self):
         ...

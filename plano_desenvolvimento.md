@@ -2040,12 +2040,12 @@ e chegar a um fluxo funcional sem precisar executar manualmente dezenas de scrip
 
 ## COA/Eletricidade
 
-- [ ] Entrada
-- [ ] Processamento
-- [ ] Armazenamento
-- [ ] Saída
-- [ ] Binário/decimal/hexadecimal
-- [ ] V × I = P
+- [x] Entrada
+- [x] Processamento
+- [x] Armazenamento
+- [x] Saída
+- [x] Binário/decimal/hexadecimal
+- [x] V × I = P
 
 ## Gestão inteligente
 

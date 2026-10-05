@@ -48,9 +48,7 @@ Escolha uma opção:
 4 - Gerenciar Alertas
 5 - Buscar módulos
 6 - Analisar consumo e eletricidade
-7 - Executar análise completa
-8 - Informações do sistema
-9 - Sair
+7 - Sair
 """
 
         self.dict_menu = {
@@ -60,9 +58,7 @@ Escolha uma opção:
             4: self._gerenciar_alertas,
             5: self._buscar_modulos,
             6: self._analisar_consumo_eletricidade,
-            7: self._executar_analise_completa,
-            8: self._informacoes_sistema,
-            9: self._sair
+            7: self._sair
         }
         
     
@@ -226,12 +222,7 @@ Modelo de previsão
     def _analisar_consumo_eletricidade(self):
         eletricidade = AnaliseEletricidade(self.__dados)
         eletricidade.run()
-
-    def _executar_analise_completa(self):
-        ...
-
-    def _informacoes_sistema(self):
-        ...
+        
 
     def _sair(self):
         raise InterromperLoop

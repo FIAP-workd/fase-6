@@ -91,14 +91,34 @@ Gerenciador de Alertas
             _dict_op = {"1":"Critica", "2":"Alta", "3":"Media", "4":"Nenhuma"}
             opcao = input("Digite o valor da proridade: ")
             if opcao not in _dict_op:
+                print("Opção inválida")
                 return _get_prioridade()
             return _dict_op.get(opcao)
+
+        def _get_status():
+            print("1.Critico\n2.Alerta\n3.Normal")
+            _dict_op = {"1":"Critico", "2":"Alerta", "3":"Normal"}
+            opcao = input("Digite o valor do status: ")
+            if opcao not in _dict_op:
+                print("Opção inválida")
+                return _get_status()
+            return _dict_op.get(opcao)
         
-        nome = input("Insira o nome do módulo")
+        nome = input("Insira o nome do módulo: ")
         ciclo = _get_ciclo()
-        tipo = input("Insira o tipo do módulo")
+        tipo = input("Insira o tipo do módulo: ")
         prioridade = _get_prioridade()
-            
+        status = _get_status()
+        mensagem_alerta = input("Insira a mensagem do alerta: ")
+        data = datetime.now().strftime("%Y-%m-%dT%H:%M:%S")
+        modulo_temp = Modulo(nome, ciclo, tipo, prioridade, status, mensagem_alerta, data)
+        prioridade = calcular_prioridade(modulo_temp)
+        if not status == 'Normal':
+            self.heap.insert(prioridade, modulo_temp)
+            print(f"Alerta {modulo_temp.nome} cadastrado na fila.")
+        else:
+            print("Status Normal, alerta não registrado na fila de prioridades.")
+
 
     def visualizar_proximo_alerta(self):
         try:

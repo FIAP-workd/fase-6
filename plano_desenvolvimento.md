@@ -2049,12 +2049,12 @@ e chegar a um fluxo funcional sem precisar executar manualmente dezenas de scrip
 
 ## Gestão inteligente
 
-- [ ] Monitoramento
-- [ ] Automação
-- [ ] Alertas
-- [ ] Previsão
-- [ ] Manutenção preditiva
-- [ ] Relação com resultados do SCIC
+- [x] Monitoramento
+- [x] Automação
+- [x] Alertas
+- [x] Previsão
+- [x] Manutenção preditiva
+- [x] Relação com resultados do SCIC
 
 ## Reflexão
 

@@ -2072,7 +2072,7 @@ e chegar a um fluxo funcional sem precisar executar manualmente dezenas de scrip
 - [x] Fluxo completo testado
 - [x] README atualizado
 - [x] Relatório final
-- [ ] `link_video.txt`
+- [x] `link_video.txt`
 
 ---
 

@@ -8,6 +8,8 @@ O projeto implementa um protótipo em Python para simular o monitoramento operac
 
 O ponto de entrada é `codigo_fonte.py`, que instancia a classe central `SCIC` e inicia o menu interativo no terminal.
 
+O relatório técnico que é solicitado pela atividade está localizado em [.docs/relatorio_tecnico.md](.docs/relatorio_tecnico.md)
+
 ## Funcionalidades
 
 - Consulta de registros do dataset operacional.

@@ -2008,7 +2008,7 @@ e chegar a um fluxo funcional sem precisar executar manualmente dezenas de scrip
 - [x] Indicadores
 - [x] Erro absoluto
 - [x] Erro relativo
-- [ ] Interpretação dos erros (Fazer no relatório técnico)
+- [x] Interpretação dos erros (Fazer no relatório técnico)
 
 ## Modelo
 
@@ -2018,7 +2018,7 @@ e chegar a um fluxo funcional sem precisar executar manualmente dezenas de scrip
 - [x] MSE
 - [x] RMSE
 - [x] R²
-- [ ] Interpretação (Fazer no relatório técnico)
+- [x] Interpretação (Fazer no relatório técnico)
 
 ## Heap
 
@@ -2058,20 +2058,20 @@ e chegar a um fluxo funcional sem precisar executar manualmente dezenas de scrip
 
 ## Reflexão
 
-- [ ] Sustentabilidade
-- [ ] Responsabilidade humana
-- [ ] Transparência
-- [ ] Inclusão/diversidade
-- [ ] Uso responsável dos dados
+- [x] Sustentabilidade
+- [x] Responsabilidade humana
+- [x] Transparência
+- [x] Inclusão/diversidade
+- [x] Uso responsável dos dados
 
 ## Integração
 
 - [x] Classe `SCIC`
 - [x] `main.py` executa o sistema
 - [x] Menu funcional
-- [ ] Fluxo completo testado
+- [x] Fluxo completo testado
 - [ ] README atualizado
-- [ ] Relatório final
+- [x] Relatório final
 - [ ] `link_video.txt`
 
 ---

@@ -2070,7 +2070,7 @@ e chegar a um fluxo funcional sem precisar executar manualmente dezenas de scrip
 - [x] `main.py` executa o sistema
 - [x] Menu funcional
 - [x] Fluxo completo testado
-- [ ] README atualizado
+- [x] README atualizado
 - [x] Relatório final
 - [ ] `link_video.txt`
 
